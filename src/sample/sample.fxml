@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" fx:id="MainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="784.0" snapToPixel="false" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="sample.Controller">
+  <children>
+    <VBox layoutX="14.0" layoutY="14.0" prefHeight="329.0" prefWidth="756.0">
+      <children>
+        <Label alignment="CENTER" prefHeight="27.0" prefWidth="657.0" text="Server App v0.4" textAlignment="RIGHT">
+          <font>
+            <Font size="20.0" />
+          </font>
+        </Label>
+        <Separator prefHeight="11.0" prefWidth="451.0" visible="false" />
+        <HBox prefHeight="357.0" prefWidth="479.0">
+          <children>
+            <Separator orientation="VERTICAL" prefHeight="396.0" prefWidth="15.0" visible="false" />
+            <VBox focusTraversable="true" prefHeight="285.0" prefWidth="181.0">
+              <children>
+                <Separator focusTraversable="true" prefHeight="14.000099999997474" prefWidth="176.0" visible="false" />
+                <Label prefHeight="52.0" prefWidth="98.0" text="Choose folder to write in:" underline="true" wrapText="true">
+                  <font>
+                    <Font size="14.0" fx:id="x2" />
+                  </font>
+                  <tooltip>
+                    <Tooltip text="Select the folder which will accept the video files from clients.&#10;All files will be stored in this folder" wrapText="false" />
+                  </tooltip>
+                </Label>
+                <HBox prefHeight="22.0" prefWidth="187.0">
+                  <children>
+                    <TextField fx:id="DirField" prefHeight="39.0" prefWidth="159.0" promptText="Directory to save files" HBox.hgrow="ALWAYS">
+                      <effect>
+                        <DropShadow height="2.8571428571428577" radius="0.9285714285714289" width="2.8571428571428577" />
+                      </effect>
+                    </TextField>
+                    <Button fx:id="FCButton" cancelButton="false" defaultButton="false" mnemonicParsing="false" onMouseClicked="#GetFolder" prefHeight="21.999900000002526" text="..." underline="false" wrapText="false" />
+                  </children>
+                </HBox>
+                <Separator focusTraversable="true" prefHeight="30.0" prefWidth="181.0" visible="false" />
+                <Label font="$x2" text="Choose action:" underline="true" wrapText="true">
+                  <tooltip>
+                    <Tooltip text="Server can be started by pressing the &quot;Run&quot; button.&#10;Please, do not close program while the data is being recieved.&#10;It may resolve into data losses." />
+                  </tooltip>
+                </Label>
+                <Separator prefHeight="10.0" prefWidth="181.0" visible="false" />
+                <HBox prefHeight="39.0" prefWidth="184.0">
+                  <children>
+                    <ToggleButton fx:id="RunButton" mnemonicParsing="false" onMouseClicked="#RunServer" prefHeight="39.0" prefWidth="81.00009999999747" text="Run" textFill="#404040">
+                      <font>
+                        <Font size="16.0" fx:id="x1" />
+                      </font>
+                    </ToggleButton>
+                    <Separator orientation="VERTICAL" prefHeight="39.0" prefWidth="26.0" visible="false" />
+                    <Button fx:id="QuitButton" font="$x1" mnemonicParsing="false" onMouseClicked="#ExitProgram" prefHeight="39.0" prefWidth="83.0" text="Quit" />
+                  </children>
+                </HBox>
+                <Separator prefHeight="7.5" prefWidth="176.0" visible="false" />
+                <Button font="$x1" mnemonicParsing="false" onMouseClicked="#OpenVideoFolder" prefHeight="39.0" prefWidth="184.0" text="Open video folder">
+                  <textFill>
+                    <Color blue="0.250" green="0.250" red="0.250" fx:id="x3" />
+                  </textFill>
+                </Button>
+                <Separator prefHeight="10.0" prefWidth="176.0" visible="false" />
+                <Button id="OpenLastVid" font="$x1" mnemonicParsing="false" onMouseClicked="#OpenLastFile" prefHeight="39.0" prefWidth="184.0" text="Open last video" textFill="$x3" />
+              </children>
+            </VBox>
+            <Separator orientation="VERTICAL" prefHeight="299.0" prefWidth="28.0" visible="false" />
+            <VBox fillWidth="true" focusTraversable="true" prefHeight="250.0" prefWidth="200.0">
+              <children>
+                <Separator prefHeight="14.0" prefWidth="195.0" visible="false" />
+                <Label alignment="CENTER_LEFT" font="$x1" prefWidth="178.0" text="Info screen:" textAlignment="LEFT">
+                  <labelFor>
+                    <TextArea fx:id="OutText" editable="false" prefHeight="247.0" prefWidth="195.0" wrapText="true" />
+                  </labelFor>
+                </Label>
+                <fx:reference source="OutText" />
+              </children>
+            </VBox>
+            <Separator orientation="VERTICAL" prefHeight="299.0" prefWidth="28.0" visible="false" />
+            <VBox prefHeight="299.0" prefWidth="290.0">
+              <children>
+                <Separator prefHeight="14.0" prefWidth="205.0" visible="false" />
+                <Label font="$x1" text="Log Screen:" />
+                <TextArea fx:id="LogText" editable="false" prefHeight="247.0" prefWidth="205.0" wrapText="true" />
+              </children>
+            </VBox>
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+  </children>
+</AnchorPane>
