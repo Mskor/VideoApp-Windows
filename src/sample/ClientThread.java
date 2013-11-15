@@ -74,6 +74,8 @@ public class ClientThread extends Thread{
     @Override
     public void run() {
         try {
+            ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+            FileMetadata fileMetadata = (FileMetadata)objectInputStream.readObject();
             File Temp = new File(DirectoryToWrite, this.getId() + ".out");
             BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(Temp));
@@ -88,7 +90,7 @@ public class ClientThread extends Thread{
             bos.close();
             bis.close();
 
-            HCodeName = new File(DirectoryToWrite, byteArray.hashCode() + ".wmv");
+            HCodeName = new File(DirectoryToWrite, byteArray.hashCode() + "." + fileMetadata.Extension);
             if(!(Temp.renameTo(HCodeName))){
                 Controller.Print("Error, renaming file, named " + Temp.getPath());
             }
