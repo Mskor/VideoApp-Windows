@@ -18,8 +18,6 @@ import java.net.Socket;
  * @version 0.4
  */
 public class ClientThread extends Thread{
-    private Object sync = new Object();
-
     /**
      * Client socket variable.
      * It is obtained via constructor.
@@ -89,14 +87,14 @@ public class ClientThread extends Thread{
 
             bos.close();
             bis.close();
-
+            objectInputStream.close();
             HCodeName = new File(DirectoryToWrite, byteArray.hashCode() + "." + fileMetadata.Extension);
             if(!(Temp.renameTo(HCodeName))){
                 Controller.Print("Error, renaming file, named " + Temp.getPath());
             }
-            synchronized (sync){
-                Controller.LastVideoDownloaded = HCodeName;
-            }
+
+            Controller.setLastVideoDownloaded(Temp);
+
             logHandle.ClientThreadReport(this);
         }catch (Exception e){
             Controller.Print(socket.getInetAddress() + " has the following error " + e.getMessage());

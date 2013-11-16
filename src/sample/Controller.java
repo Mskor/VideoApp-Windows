@@ -25,8 +25,10 @@ public class Controller {
      * Marks last video for internal usage.
      * @see sample.Controller#OpenLastFile()
      */
-    public static File LastVideoDownloaded = null;
-    private LogHandle servlog = new LogHandle();
+    private static File LastVideoDownloaded = null;
+    static synchronized void setLastVideoDownloaded(File newFile){
+        LastVideoDownloaded = newFile;
+    }
 
     @FXML
     private ResourceBundle resources;
@@ -63,7 +65,7 @@ public class Controller {
     void ExitProgram(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             //TODO: FIX THIS FUCKING EXIT
-            servlog.EndSession();
+            ServerThread.setAppRunning(false);
             System.exit(0);
         }
     }
@@ -79,24 +81,7 @@ public class Controller {
     @FXML
     void RunServer(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
-            Thread RunDown = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        OutText.appendText("Starting server\n");
-                        ServerSocket ServSocket = new ServerSocket(8080);
-                        while (true) {
-                                Socket Client = null;
-                                Client = ServSocket.accept();
-                                OutText.appendText(Client.getInetAddress() + " accepted \n");
-                                new ClientThread(Client, servlog);
-                            }
-                    } catch (Exception e){
-                        OutText.appendText(e.getMessage() + "\n");
-                    }
-                }
-            });
-            RunDown.start();
+            ServerThread serverThread = new ServerThread();
         }
     }
 
