@@ -26,6 +26,11 @@ public class LogHandle {
      * Default value is "./servlog.txt"
      */
     public static File LogFilePath = new File( "./servlog.txt");
+    /**
+     * Marks last video for internal usage.
+     * @see Controller#OpenLastFile()
+     */
+    static File LastVideoDownloaded = null;
     private Object logsync = new Object();
     private long CurTime;
 
@@ -54,6 +59,10 @@ public class LogHandle {
             Controller.Print("Error while writing log file\n");
         }
     }
+    }
+
+    static synchronized void setLastVideoDownloaded(File newFile){
+        LastVideoDownloaded = newFile;
     }
 
     /**

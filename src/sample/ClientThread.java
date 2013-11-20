@@ -93,7 +93,7 @@ public class ClientThread extends Thread{
                 Controller.Print("Error, renaming file, named " + Temp.getPath());
             }
 
-            Controller.setLastVideoDownloaded(Temp);
+            LogHandle.setLastVideoDownloaded(Temp);
 
             logHandle.ClientThreadReport(this);
         }catch (Exception e){

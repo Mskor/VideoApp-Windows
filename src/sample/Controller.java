@@ -1,6 +1,5 @@
 package sample;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
@@ -12,7 +11,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-
 import javax.swing.*;
 
 /**
@@ -20,15 +18,6 @@ import javax.swing.*;
  */
 
 public class Controller {
-
-    /**
-     * Marks last video for internal usage.
-     * @see sample.Controller#OpenLastFile()
-     */
-    private static File LastVideoDownloaded = null;
-    static synchronized void setLastVideoDownloaded(File newFile){
-        LastVideoDownloaded = newFile;
-    }
 
     @FXML
     private ResourceBundle resources;
@@ -64,8 +53,6 @@ public class Controller {
     @FXML
     void ExitProgram(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
-            //TODO: FIX THIS FUCKING EXIT
-            ServerThread.setAppRunning(false);
             System.exit(0);
         }
     }
@@ -110,14 +97,14 @@ public class Controller {
      */
     @FXML
     void OpenLastFile(){
-        if(LastVideoDownloaded == null){
+        if(LogHandle.LastVideoDownloaded == null){
             OutText.appendText("No video downloaded yet\n");
         }else{
-            if(!LastVideoDownloaded.exists()){
+            if(!LogHandle.LastVideoDownloaded.exists()){
                 OutText.appendText("It seems that video doesn't exist already");
             }else{
                 try{
-                    Runtime.getRuntime().exec("C:\\Program Files\\Windows Media Player\\wmplayer.exe " + LastVideoDownloaded);
+                    Runtime.getRuntime().exec("C:\\Program Files\\Windows Media Player\\wmplayer.exe " + LogHandle.LastVideoDownloaded);
                 }catch (IOException ioe){
                     Controller.Print("Error opening video");
                 }
