@@ -79,7 +79,7 @@ public class LogHandle {
             try {
                 BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(LogFilePath, true));
                 bufferedWriter.write(clientThread.socket.getInetAddress()
-                        + " uploaded"
+                        + " uploaded "
                         + clientThread.HCodeName.getName());
                 Controller.LogPrint(new SimpleDateFormat("HH:mm :").format(CurTime) +
                         clientThread.socket.getInetAddress()

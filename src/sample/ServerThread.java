@@ -11,6 +11,7 @@ public class ServerThread extends Thread{
     ServerThread(){
         servlog = new LogHandle();
         try{
+            this.setDaemon(true);
             ServSocket = new ServerSocket(8080);
             this.start();
         }catch (IOException ioe){
