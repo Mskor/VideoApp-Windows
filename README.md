@@ -2,7 +2,7 @@ VideoApp-Windows
 ================
 
 Build Instructions:
-...................
+___________________
 
 IntelliJIdea
 
@@ -33,7 +33,7 @@ Then go to .idea/modules.xml and add that Project_Name.iml like following:
   </component>
 </project>
 
-...................
+__________________
 
 Eclipse
 ___________________
