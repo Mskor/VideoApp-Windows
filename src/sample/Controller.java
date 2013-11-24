@@ -97,14 +97,14 @@ public class Controller {
      */
     @FXML
     void OpenLastFile(){
-        if(LogHandle.LastVideoDownloaded == null){
+        if(SingletonLogHandle.LastVideoDownloaded == null){
             OutText.appendText("No video downloaded yet\n");
         }else{
-            if(!LogHandle.LastVideoDownloaded.exists()){
+            if(!SingletonLogHandle.LastVideoDownloaded.exists()){
                 OutText.appendText("It seems that video doesn't exist already");
             }else{
                 try{
-                    Runtime.getRuntime().exec("C:\\Program Files\\Windows Media Player\\wmplayer.exe " + LogHandle.LastVideoDownloaded);
+                    Runtime.getRuntime().exec("C:\\Program Files\\Windows Media Player\\wmplayer.exe " + SingletonLogHandle.LastVideoDownloaded);
                 }catch (IOException ioe){
                     Controller.Print("Error opening video");
                 }

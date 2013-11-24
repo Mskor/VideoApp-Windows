@@ -1,5 +1,7 @@
 package sample;
 
+import sun.security.jca.GetInstance;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -19,7 +21,7 @@ import java.text.SimpleDateFormat;
  * @version 0.4
  * @since 0.3
  */
-public class LogHandle {
+public class SingletonLogHandle {
 
     /**
      * Customizable file logfile path.
@@ -33,13 +35,20 @@ public class LogHandle {
     static File LastVideoDownloaded = null;
     private Object logsync = new Object();
     private long CurTime;
+    private static SingletonLogHandle Instance = null;
 
+    public static SingletonLogHandle GetInstance(){
+        if(Instance == null){
+            Instance = new SingletonLogHandle();
+        }
+        return Instance;
+    }
     /**
      * Checks out if the log file not already exists.
      * If it's so constructor creates the file.
      * It also leaves the mark that new session has begun.
      */
-    LogHandle(){
+    protected SingletonLogHandle(){
     synchronized (logsync){
         if(!LogFilePath.exists()){
             try{

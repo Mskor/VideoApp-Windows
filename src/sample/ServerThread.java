@@ -6,10 +6,8 @@ import java.net.Socket;
 
 public class ServerThread extends Thread{
     private ServerSocket ServSocket;
-    private LogHandle servlog;
 
     ServerThread(){
-        servlog = new LogHandle();
         try{
             this.setDaemon(true);
             ServSocket = new ServerSocket(8080);
@@ -28,7 +26,7 @@ public class ServerThread extends Thread{
                 Socket Client = null;
                 Client = ServSocket.accept();
                 Controller.Print(Client.getInetAddress() + " accepted \n");
-                new ClientThread(Client, servlog);
+                new ClientThread(Client);
             }
         }catch (IOException ioe){
             Controller.Print(ioe.getMessage() + "\n");

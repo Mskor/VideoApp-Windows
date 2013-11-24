@@ -11,7 +11,7 @@ import java.net.Socket;
  * a file with *.out extension named uniquely for each client instance
  * (it uses Thread ID to name a temporary file).
  *
- * Uses {@link LogHandle} type to write down information about downloading
+ * Uses {@link SingletonLogHandle} type to write down information about downloading
  *
  * @author Yakovlev Oleg
  * @since 0.2
@@ -23,12 +23,6 @@ public class ClientThread extends Thread{
      * It is obtained via constructor.
      */
     public final Socket socket;
-
-    /**
-     * An instance of {@link LogHandle} which will do the logs
-     * for the process of download.
-     */
-    private final LogHandle logHandle;
 
     /**
      * Name that is assigned to the downloaded file
@@ -49,11 +43,9 @@ public class ClientThread extends Thread{
     /**
      * Constructor starts the downloading process according to the arguments it gets.
      * @param Client Defines the connection between server and client <b>this</b> exact thread handles
-     * @param lh Defines the instance of {@link LogHandle} to do the logging
      */
-    ClientThread(Socket Client, LogHandle lh){
+    ClientThread(Socket Client){
         this.socket = Client;
-        this.logHandle = lh;
         this.DirectoryToWrite = new File(Controller.GetDir());
         this.start();
     }
@@ -93,9 +85,9 @@ public class ClientThread extends Thread{
                 Controller.Print("Error, renaming file, named " + Temp.getPath());
             }
 
-            LogHandle.setLastVideoDownloaded(Temp);
+            SingletonLogHandle.setLastVideoDownloaded(Temp);
 
-            logHandle.ClientThreadReport(this);
+            SingletonLogHandle.GetInstance().ClientThreadReport(this);
         }catch (Exception e){
             Controller.Print(socket.getInetAddress() + " has the following error " + e.getMessage());
         }
