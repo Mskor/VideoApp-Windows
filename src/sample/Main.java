@@ -13,13 +13,14 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("FT v0.3 Server");
+        primaryStage.setTitle("FT v0.45 Server");
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, 784, 360));
         primaryStage.show();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
+                SingletonLogHandle.GetInstance().EndSession();
                 System.exit(0);
             }
         });

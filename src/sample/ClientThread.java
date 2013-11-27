@@ -2,6 +2,7 @@ package sample;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Handles file transfer from any client in a separate thread.
@@ -17,28 +18,36 @@ import java.net.Socket;
  * @since 0.2
  * @version 0.4
  */
-public class ClientThread extends Thread{
+public class ClientThread extends Thread implements Loggable{
     /**
      * Client socket variable.
      * It is obtained via constructor.
      */
-    public final Socket socket;
+    private final Socket socket;
 
     /**
-     * Name that is assigned to the downloaded file
-     * right after the process of download is ended.
-     *
-     * It is assigned a <b>hash-code</b> of last packet
-     * of this file to ensure that the name will be unique
-     * for each file.
+     * Incoming data goes here
      */
-    public File HCodeName;
+    private File Temp;
 
     /**
      * A folder where all downloaded files are accumulated.
      * Thread gets it directly from the UI, invoking {@link sample.Controller#GetDir()}
+     * @see Controller
      */
     private final File DirectoryToWrite;
+
+    /**
+     * @return String that will be used for logging about this process
+     * @see Loggable
+     */
+    @Override
+    public String GetLogEntry(){
+        String entry;
+        entry = "Client " + socket.getInetAddress() + " uploaded file, named " + HCodeName.getName() + "\n";
+        return entry;
+    }
+    private File HCodeName;
 
     /**
      * Constructor starts the downloading process according to the arguments it gets.
@@ -64,9 +73,19 @@ public class ClientThread extends Thread{
     @Override
     public void run() {
         try {
+
+            /**
+             * Getting metadata of file
+             */
+
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             FileMetadata fileMetadata = (FileMetadata)objectInputStream.readObject();
-            File Temp = new File(DirectoryToWrite, this.getId() + ".out");
+            Temp = new File(DirectoryToWrite, this.getId() + ".out");
+
+            /**
+             * Getting the file
+             */
+
             BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(Temp));
 
@@ -80,13 +99,21 @@ public class ClientThread extends Thread{
             bos.close();
             bis.close();
             objectInputStream.close();
+
+            /**
+             * Saving the file
+             */
+
             HCodeName = new File(DirectoryToWrite, byteArray.hashCode() + "." + fileMetadata.Extension);
             if(!(Temp.renameTo(HCodeName))){
                 Controller.Print("Error, renaming file, named " + Temp.getPath());
             }
 
-            SingletonLogHandle.setLastVideoDownloaded(Temp);
+            /**
+             * Logging about file
+             */
 
+            SingletonLogHandle.GetInstance().setLastVideoDownloaded(Temp);
             SingletonLogHandle.GetInstance().ClientThreadReport(this);
         }catch (Exception e){
             Controller.Print(socket.getInetAddress() + " has the following error " + e.getMessage());

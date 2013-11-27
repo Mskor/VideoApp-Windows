@@ -1,7 +1,5 @@
 package sample;
 
-import sun.security.jca.GetInstance;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -24,32 +22,42 @@ import java.text.SimpleDateFormat;
 public class SingletonLogHandle {
 
     /**
-     * Customizable file logfile path.
-     * Default value is "./servlog.txt"
+     * Currently hardcoded
      */
-    public static File LogFilePath = new File( "./servlog.txt");
+    private File LogFilePath = new File( "./servlog.txt");
+
     /**
      * Marks last video for internal usage.
      * @see Controller#OpenLastFile()
      */
-    static File LastVideoDownloaded = null;
-    private Object logsync = new Object();
-    private long CurTime;
+    private File LastVideoDownloaded = null;
+
+    public File getLastVideoDownloaded() {
+        return LastVideoDownloaded;
+    }
+
+    public void setLastVideoDownloaded(File lastVideoDownloaded) {
+        LastVideoDownloaded = lastVideoDownloaded;
+    }
+
     private static SingletonLogHandle Instance = null;
 
+    /**
+     * For the implementation of singleton pattern
+     */
     public static SingletonLogHandle GetInstance(){
         if(Instance == null){
             Instance = new SingletonLogHandle();
         }
         return Instance;
     }
+
     /**
      * Checks out if the log file not already exists.
      * If it's so constructor creates the file.
      * It also leaves the mark that new session has begun.
      */
     protected SingletonLogHandle(){
-    synchronized (logsync){
         if(!LogFilePath.exists()){
             try{
                 LogFilePath.createNewFile();
@@ -59,7 +67,7 @@ public class SingletonLogHandle {
         }
         try{
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(LogFilePath, true));
-            CurTime = System.currentTimeMillis();
+            long CurTime = System.currentTimeMillis();
             bufferedWriter.write(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(CurTime) + " session begun");
             bufferedWriter.newLine();
             bufferedWriter.newLine();
@@ -68,37 +76,23 @@ public class SingletonLogHandle {
             Controller.Print("Error while writing log file\n");
         }
     }
-    }
-
-    static synchronized void setLastVideoDownloaded(File newFile){
-        LastVideoDownloaded = newFile;
-    }
 
     /**
      * Leaves a mark in the logfile.
-     *
-     * Mark goes in the form:
-     * "Client <b><u>internet address  of client</u></b> successfully uploaded file named
-     * <b><u>name that was assigned to downloaded file</u></b>"
-     * @param clientThread An instance of {@link ClientThread}
-     *                     that has to report info
-     *                     about its download     */
-    void ClientThreadReport(ClientThread clientThread){
-        synchronized (logsync){
-            try {
+     * @param instance class instance to be logged,
+     * the actual message is defined by overridden {@link sample.Loggable#GetLogEntry()} method
+     * @see Loggable
+     */
+    synchronized void ClientThreadReport(Loggable instance){
+        try {
                 BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(LogFilePath, true));
-                bufferedWriter.write(clientThread.socket.getInetAddress()
-                        + " uploaded "
-                        + clientThread.HCodeName.getName());
-                Controller.LogPrint(new SimpleDateFormat("HH:mm :").format(CurTime) +
-                        clientThread.socket.getInetAddress()
-                        + " uploaded "
-                        + clientThread.HCodeName.getName() + "\n");
+                long CurTime = System.currentTimeMillis();
+                bufferedWriter.write(new SimpleDateFormat("HH:mm :").format(CurTime) + instance.GetLogEntry());
+                Controller.LogPrint(instance.GetLogEntry());
                 bufferedWriter.newLine();
                 bufferedWriter.close();
-            }catch (IOException ioe){
+        }catch (IOException ioe){
                 Controller.Print("Error while reporting log file\n");
-            }
         }
     }
 
@@ -106,10 +100,9 @@ public class SingletonLogHandle {
      * Leaves a time mark in the logfile about an end of this session
      */
     void EndSession() {
-        synchronized (logsync){
             try{
                 BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(LogFilePath, true));
-                CurTime = System.currentTimeMillis();
+                long CurTime = System.currentTimeMillis();
                 bufferedWriter.newLine();
                 bufferedWriter.write(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(CurTime) + " session ends");
                 bufferedWriter.newLine();
@@ -119,6 +112,5 @@ public class SingletonLogHandle {
             }catch (IOException ioe){
                 Controller.Print("Error while writing log file\n");
             }
-        }
     }
 }

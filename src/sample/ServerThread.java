@@ -5,12 +5,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerThread extends Thread{
-    private ServerSocket ServSocket;
+    private ServerSocket serverSocket;
 
     ServerThread(){
         try{
             this.setDaemon(true);
-            ServSocket = new ServerSocket(8080);
+            serverSocket = new ServerSocket(8080);
             this.start();
         }catch (IOException ioe){
             Controller.Print(ioe.getMessage());
@@ -24,7 +24,7 @@ public class ServerThread extends Thread{
 
             while (true) {
                 Socket Client = null;
-                Client = ServSocket.accept();
+                Client = serverSocket.accept();
                 Controller.Print(Client.getInetAddress() + " accepted \n");
                 new ClientThread(Client);
             }

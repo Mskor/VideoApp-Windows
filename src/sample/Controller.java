@@ -53,6 +53,7 @@ public class Controller {
     @FXML
     void ExitProgram(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
+            SingletonLogHandle.GetInstance().EndSession();
             System.exit(0);
         }
     }
@@ -97,14 +98,15 @@ public class Controller {
      */
     @FXML
     void OpenLastFile(){
-        if(SingletonLogHandle.LastVideoDownloaded == null){
+        if(SingletonLogHandle.GetInstance().getLastVideoDownloaded() == null){
             OutText.appendText("No video downloaded yet\n");
         }else{
-            if(!SingletonLogHandle.LastVideoDownloaded.exists()){
+            if(!SingletonLogHandle.GetInstance().getLastVideoDownloaded().exists()){
                 OutText.appendText("It seems that video doesn't exist already");
             }else{
                 try{
-                    Runtime.getRuntime().exec("C:\\Program Files\\Windows Media Player\\wmplayer.exe " + SingletonLogHandle.LastVideoDownloaded);
+                    Runtime.getRuntime().exec("C:\\Program Files\\Windows Media Player\\wmplayer.exe " +
+                            SingletonLogHandle.GetInstance().getLastVideoDownloaded());
                 }catch (IOException ioe){
                     Controller.Print("Error opening video");
                 }

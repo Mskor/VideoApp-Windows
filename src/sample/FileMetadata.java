@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.StringTokenizer;
 
 /**
- *
+ *  Auxiliary structure to launch metadata of file to server
  */
 public class FileMetadata implements Serializable{
     String Extension;
