@@ -154,7 +154,7 @@ public class Controller {
     }
 
     /**
-     * Designed for external usage
+     * Designed for {@link SingletonLogHandle} messages
      * @param foo A {@link String} to print out in {@link Controller#OutText}
      */
     static void LogPrint(String foo){
@@ -162,7 +162,7 @@ public class Controller {
     }
 
     /**
-     * Designed for external usage
+     * Designed to replace System.out.print
      * @param foo A {@link String} to print out in {@link Controller#OutText}
      */
     static void Print(String foo){

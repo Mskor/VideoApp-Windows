@@ -8,7 +8,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-
+/**
+ * JavaFX main class, serving as a program 
+ * view implementation
+ * @see Application
+ */
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
